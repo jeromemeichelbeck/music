@@ -19,6 +19,17 @@ import { type AdapterAccount } from "next-auth/adapters";
  */
 export const mysqlTable = mysqlTableCreator((name) => `music_${name}`);
 
+// Those fields are common to most entities
+export const baseEntity = {
+  id: bigint("id", { mode: "number" }).primaryKey().autoincrement(),
+  description: text("description").notNull(),
+  name: varchar("name", { length: 255 }).notNull(),
+  createdAt: timestamp("createdAt")
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp("updatedAt").onUpdateNow(),
+};
+
 export const posts = mysqlTable(
   "post",
   {
@@ -108,8 +119,37 @@ export const verificationTokens = mysqlTable(
   }),
 );
 
-export const bands = mysqlTable("band", {
-  id: bigint("id", { mode: "number" }).primaryKey().autoincrement(),
-  name: varchar("name", { length: 255 }).notNull(),
-  description: text("description").notNull(),
+export const countries = mysqlTable("country", {
+  ...baseEntity,
+  code: varchar("code", { length: 255 }).notNull(),
 });
+
+export const areas = mysqlTable("area", {
+  ...baseEntity,
+  countryId: bigint("countryId", { mode: "number" }).notNull(),
+});
+
+export const areasRelations = relations(areas, ({ one }) => ({
+  country: one(countries, {
+    fields: [areas.countryId],
+    references: [countries.id],
+  }),
+}));
+
+export const towns = mysqlTable("town", {
+  ...baseEntity,
+  areaId: bigint("areaId", { mode: "number" }).notNull(),
+});
+
+export const townRelations = relations(towns, ({ one }) => ({
+  area: one(areas, { fields: [towns.areaId], references: [areas.id] }),
+}));
+
+export const bands = mysqlTable("band", {
+  ...baseEntity,
+  townId: bigint("townId", { mode: "number" }).notNull(),
+});
+
+export const bandsRelations = relations(bands, ({ one }) => ({
+  town: one(towns, { fields: [bands.townId], references: [towns.id] }),
+}));

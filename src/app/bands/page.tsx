@@ -1,7 +1,10 @@
-import { getBands, getBandsTotalCount } from "@/server/models/bands";
+import {
+  getBandsTotalCount,
+  getPaginatedBands,
+} from "@/server/models/band.model";
 
 export default async function BandsPage() {
-  const bands = await getBands();
+  const bands = await getPaginatedBands({ page: 1, pageSize: 20 });
   const count = await getBandsTotalCount();
 
   return (

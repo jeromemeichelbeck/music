@@ -1,4 +1,4 @@
-// bun run src/scripts/seeding/index.ts
+// bun run src/scripts/seeding/seed.ts
 
 import { db } from "@/server/db";
 import { areas, bands, countries, towns } from "@/server/db/schema";

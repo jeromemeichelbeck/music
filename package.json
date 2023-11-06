@@ -6,6 +6,8 @@
     "build": "next build",
     "db:push": "dotenv drizzle-kit push:mysql",
     "db:studio": "dotenv drizzle-kit studio",
+    "db:reset": "bun run src/scripts/seeding/reset.ts",
+    "db:seed": "bun run src/scripts/seeding/seed.ts",
     "dev": "next dev",
     "lint": "next lint",
     "start": "next start"

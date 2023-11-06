@@ -139,6 +139,8 @@ export const areasRelations = relations(areas, ({ one }) => ({
 export const towns = mysqlTable("town", {
   ...baseEntity,
   areaId: bigint("areaId", { mode: "number" }).notNull(),
+  latitude: varchar("latitude", { length: 255 }).notNull(),
+  longitude: varchar("longitude", { length: 255 }).notNull(),
 });
 
 export const townRelations = relations(towns, ({ one }) => ({

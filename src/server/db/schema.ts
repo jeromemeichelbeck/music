@@ -107,3 +107,9 @@ export const verificationTokens = mysqlTable(
     compoundKey: primaryKey(vt.identifier, vt.token),
   }),
 );
+
+export const bands = mysqlTable("band", {
+  id: bigint("id", { mode: "number" }).primaryKey().autoincrement(),
+  name: varchar("name", { length: 255 }).notNull(),
+  description: text("description").notNull(),
+});

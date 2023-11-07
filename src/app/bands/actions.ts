@@ -1,7 +1,7 @@
 "use server";
 
-import { fromFormData } from "@/lib/fromFormaData";
-import { insertBand, insertBandSchema } from "@/server/models/bands.model";
+import { fromFormData } from "@/lib/utils/from-form-data.util";
+import { insertBand, insertBandSchema } from "@/server/models/band.model";
 
 export async function addBand(formData: FormData) {
   try {

@@ -22,6 +22,7 @@ export const mysqlTable = mysqlTableCreator((name) => `music_${name}`);
 // Those fields are common to most entities
 export const baseEntity = {
   id: bigint("id", { mode: "number" }).primaryKey().autoincrement(),
+  summary: text("summary").notNull(),
   description: text("description").notNull(),
   name: varchar("name", { length: 255 }).notNull(),
   createdAt: timestamp("createdAt")
@@ -124,16 +125,21 @@ export const countries = mysqlTable("country", {
   code: varchar("code", { length: 255 }).notNull(),
 });
 
+export const countriesRelations = relations(countries, ({ many }) => ({
+  areas: many(areas),
+}));
+
 export const areas = mysqlTable("area", {
   ...baseEntity,
   countryId: bigint("countryId", { mode: "number" }).notNull(),
 });
 
-export const areasRelations = relations(areas, ({ one }) => ({
+export const areasRelations = relations(areas, ({ one, many }) => ({
   country: one(countries, {
     fields: [areas.countryId],
     references: [countries.id],
   }),
+  towns: many(towns),
 }));
 
 export const towns = mysqlTable("town", {
@@ -143,15 +149,46 @@ export const towns = mysqlTable("town", {
   longitude: varchar("longitude", { length: 255 }).notNull(),
 });
 
-export const townRelations = relations(towns, ({ one }) => ({
+export const townRelations = relations(towns, ({ one, many }) => ({
   area: one(areas, { fields: [towns.areaId], references: [areas.id] }),
+  bands: many(bands),
+}));
+
+export const genres = mysqlTable("genre", {
+  ...baseEntity,
+});
+
+export const genresRelations = relations(genres, ({ many }) => ({
+  bandGenres: many(bandGenres),
+}));
+
+export const bandGenres = mysqlTable(
+  "bandGenre",
+  {
+    bandId: bigint("bandId", { mode: "number" }).notNull(),
+    genreId: bigint("genreId", { mode: "number" }).notNull(),
+  },
+  (bg) => ({
+    compoundKey: primaryKey(bg.bandId, bg.genreId),
+  }),
+);
+
+export const bandGenresRelations = relations(bandGenres, ({ one }) => ({
+  band: one(bands, { fields: [bandGenres.bandId], references: [bands.id] }),
+  genre: one(genres, {
+    fields: [bandGenres.genreId],
+    references: [genres.id],
+  }),
 }));
 
 export const bands = mysqlTable("band", {
   ...baseEntity,
+  yearActiveFrom: varchar("yearActiveFrom", { length: 255 }).notNull(),
+  yearActiveTo: varchar("yearActiveTo", { length: 255 }),
   townId: bigint("townId", { mode: "number" }).notNull(),
 });
 
-export const bandsRelations = relations(bands, ({ one }) => ({
+export const bandsRelations = relations(bands, ({ one, many }) => ({
   town: one(towns, { fields: [bands.townId], references: [towns.id] }),
+  bandGenres: many(bandGenres),
 }));

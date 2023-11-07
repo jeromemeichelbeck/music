@@ -1,7 +1,7 @@
 // bun run src/scripts/seeding/reset.ts
 
 import { db } from "@/server/db";
-import { areas, bands, countries, towns } from "@/server/db/schema";
+import { areas, bandGenres, bands, countries, genres, towns } from "@/server/db/schema";
 import { sql } from "drizzle-orm";
 
 export async function reset() {
@@ -10,6 +10,8 @@ export async function reset() {
     db.delete(areas),
     db.delete(towns),
     db.delete(bands),
+    db.delete(genres),
+    db.delete(bandGenres),
   ]);
 
   await Promise.all([
@@ -17,6 +19,7 @@ export async function reset() {
     db.execute(sql`ALTER TABLE music_area AUTO_INCREMENT = 1;`),
     db.execute(sql`ALTER TABLE music_town AUTO_INCREMENT = 1;`),
     db.execute(sql`ALTER TABLE music_band AUTO_INCREMENT = 1;`),
+    db.execute(sql`ALTER TABLE music_genre AUTO_INCREMENT = 1;`),
   ]);
 }
 

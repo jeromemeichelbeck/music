@@ -22,6 +22,7 @@ export default async function BandPage({ params }: BandPageProps) {
       <h1>{band.name}</h1>
       <p>{band.summary}</p>
       <p>{band.description}</p>
+      <p>{band.town.name}, {band.town.area.country.name}</p>
     </div>
   );
 }

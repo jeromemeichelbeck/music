@@ -21,42 +21,58 @@ export async function getBandsTotalCount() {
 }
 
 export async function getBands({ page, pageSize }: PaginationOptions) {
-  return db.query.bands.findMany({
-    limit: pageSize,
-    offset: (page - 1) * pageSize,
-    with: {
-      town: {
-        with: {
-          area: {
-            with: {
-              country: true,
+  try {
+    return db.query.bands.findMany({
+      limit: pageSize,
+      offset: (page - 1) * pageSize,
+      with: {
+        town: {
+          with: {
+            area: {
+              with: {
+                country: true,
+              },
             },
           },
         },
-      },
-      bandGenres: {
-        with: {
-          genre: true,
+        bandGenres: {
+          with: {
+            genre: true,
+          },
         },
       },
-    },
-  });
+    });
+  } catch (error) {
+    return [];
+  }
 }
 
 export async function getBandById(bandId: number) {
-  return (
-    (
-      await db
-        .select()
-        .from(bands)
-        // .innerJoin(towns, eq(bands.townId, towns.id))
-        // .innerJoin(areas, eq(towns.areaId, areas.id))
-        // .innerJoin(countries, eq(areas.countryId, countries.id))
-        // .innerJoin(bandGenres, eq(bands.id, bandGenres.bandId))
-        // .innerJoin(genres, eq(bandGenres.genreId, genres.id))
-        .where(eq(bands.id, bandId))
-    )[0]
-  );
+  try {
+    return (
+      (await db.query.bands.findFirst({
+        where: eq(bands.id, bandId),
+        with: {
+          town: {
+            with: {
+              area: {
+                with: {
+                  country: true,
+                },
+              },
+            },
+          },
+          bandGenres: {
+            with: {
+              genre: true,
+            },
+          },
+        },
+      })) ?? null
+    );
+  } catch (error) {
+    return null;
+  }
 }
 
 export async function getPaginatedBands(

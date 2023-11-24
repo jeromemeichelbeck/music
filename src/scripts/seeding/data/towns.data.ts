@@ -342,6 +342,28 @@ export const townsData = [
     longitude: "120.5853",
   },
   {
+    id: 32,
+    name: "Perth",
+    summary:
+      "Perth is the capital of Western Australia, known for its stunning beaches and outdoor lifestyle.",
+    description:
+      "Perth is the capital of Western Australia and is known for its stunning beaches along the Indian Ocean, outdoor lifestyle, and a growing arts and culinary scene. It's one of the most isolated major cities in the world.",
+    areaId: 30, // Corresponds to Western Australia
+    latitude: "-31.9505",
+    longitude: "115.8605",
+  },
+  {
+    id: 33,
+    name: "Lyon",
+    summary:
+      "Lyon is a city in east-central France, known for its culinary excellence and Renaissance architecture.",
+    description:
+      "Lyon is a city located in east-central France. It is known for its culinary excellence, historic Renaissance architecture, and vibrant cultural scene. Lyon is often considered the gastronomic capital of France.",
+    areaId: 24, // Corresponds to Auvergne-Rhône-Alpes
+    latitude: "45.75",
+    longitude: "4.85",
+  },
+  {
     id: 34,
     name: "Stuttgart",
     summary:

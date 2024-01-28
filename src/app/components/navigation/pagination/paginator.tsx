@@ -1,3 +1,5 @@
+import { Button, buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils/cn";
 import Link from "next/link";
 
 type PaginatorProps = {
@@ -13,7 +15,10 @@ export default function Paginator({ currentPage, totalPages }: PaginatorProps) {
     <nav>
       <Link
         href={`/bands?page=${currentPage - 1}`}
-        className={disablePrevious ? "pointer-events-none" : ""}
+        className={cn(
+          buttonVariants(),
+          disablePrevious && "pointer-events-none opacity-50",
+        )}
         tabIndex={disablePrevious ? -1 : undefined}
         aria-disabled={disablePrevious}
       >
@@ -22,7 +27,10 @@ export default function Paginator({ currentPage, totalPages }: PaginatorProps) {
       <span>{currentPage}</span>
       <Link
         href={`/bands?page=${currentPage + 1}`}
-        className={disableNext ? "pointer-events-none" : ""}
+        className={cn(
+          buttonVariants(),
+          disableNext && "pointer-events-none opacity-50",
+        )}
         tabIndex={disableNext ? -1 : undefined}
         aria-disabled={disableNext}
       >

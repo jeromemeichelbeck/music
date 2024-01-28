@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils/components";
+import { cn } from "@/lib/utils/cn";
 import "@/styles/globals.css";
 
 import { Inter } from "next/font/google";
